@@ -4,7 +4,6 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 // Element Plus 国际化
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-import en from 'element-plus/dist/locale/en.mjs'
 import ArcoVue from '@arco-design/web-vue'
 import '@arco-design/web-vue/dist/arco.css'
 import axios from 'axios'
@@ -16,7 +15,6 @@ import App from './App.vue'
 import eventBus from './utils/eventBus'
 // 导入通用样式
 import './styles/common.css'
-// 引入i18n
 
 import Login from './views/Login.vue'
 import AuthSuccess from './views/AuthSuccess.vue'
@@ -174,9 +172,9 @@ function clearAuthCache() {
 }
 
 const routes = [
-  { path: '/', component: Home, meta: { requiresAuth: true } },
+  { path: '/', redirect: '/login' },
   { path: '/login', component: Login, meta: { requiresAuth: false } },
-  { path: '/api', redirect: '/' },
+  { path: '/api', redirect: '/login' },
   { path: '/auth/success', component: AuthSuccess, meta: { requiresAuth: false } },
 ]
 
@@ -220,13 +218,11 @@ router.beforeEach(async (to, from, next) => {
 
 // 获取Element Plus语言包
 const getElementLocale = () => {
-  const currentLang = i18n.global.locale.value
-  return currentLang === 'en' ? en : zhCn
+  return zhCn
 }
 
 const app = createApp(App)
 app.use(router)
-app.use(i18n)
 app.use(ElementPlus, {
   locale: getElementLocale()
 })
