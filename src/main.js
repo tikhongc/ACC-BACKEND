@@ -8,6 +8,9 @@ import en from 'element-plus/dist/locale/en.mjs'
 import ArcoVue from '@arco-design/web-vue'
 import '@arco-design/web-vue/dist/arco.css'
 import axios from 'axios'
+
+// 後端 API 基址，部署時以 VITE_API_BASE 指定（如 https://api.example.com）
+const apiBase = import.meta.env.VITE_API_BASE || ''
 import App from './App.vue'
 // 引入事件总线
 import eventBus from './utils/eventBus'
@@ -40,7 +43,8 @@ import IssueDetailView from './views/IssueDetailView.vue'
 import SyncProgress from './views/SyncProgress.vue'
 import SyncHistory from './views/SyncHistory.vue'
 
-// 配置axios支持cookies
+// 配置axios支持cookies與基址
+axios.defaults.baseURL = apiBase
 axios.defaults.withCredentials = true
 
 // 添加axios响应拦截器处理Token过期和401错误

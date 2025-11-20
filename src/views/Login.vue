@@ -45,6 +45,7 @@
 
 <script>
 import axios from 'axios'
+const apiBase = import.meta.env.VITE_API_BASE || ''
 
 export default {
   name: 'Login',
@@ -66,7 +67,7 @@ export default {
       try {
         console.log('Starting Autodesk authentication...')
         // Redirect to Flask backend authentication endpoint
-        window.location.href = '/auth/start'
+        window.location.href = `${apiBase}/auth/start`
       } catch (error) {
         console.error('Authentication start failed:', error)
         this.$message.error('Authentication startup failed: ' + error.message)

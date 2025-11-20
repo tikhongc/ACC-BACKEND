@@ -563,7 +563,8 @@ export default {
             showCancelButton: true
           }).then(() => {
             // 用户选择重新认证
-            window.location.href = '/api/auth/start'
+            const apiBase = import.meta.env.VITE_API_BASE || ''
+            window.location.href = `${apiBase}/api/auth/start`
           }).catch(() => {
             // 用户选择关闭
           })

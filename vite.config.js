@@ -1,61 +1,40 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
 
-export default defineConfig({
-  plugins: [vue()],
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src')
-    }
-  },
-  server: {
-    host: '0.0.0.0', // 允许外部访问
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8080', // 强制使用IPv4
-        changeOrigin: true,
-        secure: false,
-        timeout: 60000, // 60秒超时，适应文件同步API的长响应时间
-        configure: (proxy, _options) => {
-          proxy.on('error', (err, req, res) => {
-            console.error('❌ Proxy error:', err.message);
-            console.error('Request URL:', req.url);
-            res.writeHead(500, {
-              'Content-Type': 'application/json',
-            });
-            res.end(JSON.stringify({
-              error: 'Proxy Error',
-              message: err.message,
-              url: req.url
-            }));
-          });
-          proxy.on('proxyReq', (proxyReq, req, _res) => {
-            console.log('🔄 Proxying request:', req.method, req.url, '-> http://localhost:8080' + req.url);
-          });
-          proxy.on('proxyRes', (proxyRes, req, _res) => {
-            console.log('✅ Proxy response:', proxyRes.statusCode, req.url);
-          });
+// 修改 export default 變成一個函數，這樣才能讀取 mode (環境變數)
+export default defineConfig(({ mode }) => {
+  // 1. 載入環境變數
+  // process.cwd() 是專案根目錄
+  const env = loadEnv(mode, process.cwd(), '')
+
+  // 2. 決定目標網址 (優先讀取 .env，如果沒有就用本地 8080)
+  const targetUrl = env.VITE_API_TARGET || 'http://127.0.0.1:8080'
+
+  console.log(`🚀 目前前端代理目標: ${targetUrl}`) // 啟動時會印在終端機給你看
+
+  return {
+    plugins: [vue()],
+    server: {
+      proxy: {
+        // API 請求代理
+        '/api': {
+          target: targetUrl,
+          changeOrigin: true,
+          secure: false, // 設為 false 以兼容 http 和 https
+        },
+        // 認證請求代理
+        '/auth': {
+          target: targetUrl,
+          changeOrigin: true,
+          secure: false,
+        },
+        // 如果你有 acc-backup 靜態檔
+        '/acc-backup': {
+          target: targetUrl,
+          changeOrigin: true,
+          secure: false,
         }
-      },
-      '/health': {
-        target: 'http://127.0.0.1:8080',
-        changeOrigin: true,
-        secure: false,
-        timeout: 60000
-      },
-      '/auth': {
-        target: 'http://127.0.0.1:8080',
-        changeOrigin: true,
-        secure: false,
-        timeout: 60000
       }
     }
-  },
-  build: {
-    outDir: 'dist/',
-    assetsDir: 'assets',
-    emptyOutDir: true
   }
 })

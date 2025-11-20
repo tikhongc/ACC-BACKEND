@@ -83,6 +83,8 @@ import { CircleCheck } from '@element-plus/icons-vue'
 import axios from 'axios'
 import projectStore from '../utils/projectStore.js'
 
+const frontendOrigin = import.meta.env.VITE_FRONTEND_ORIGIN || window.location.origin
+
 export default {
   name: 'AuthSuccess',
   components: {
@@ -132,7 +134,7 @@ export default {
     setupOAuthMessageListener() {
       // 监听来自OAuth回调窗口的消息
       window.addEventListener('message', (event) => {
-        if (event.origin !== window.location.origin) {
+        if (event.origin !== frontendOrigin) {
           return // 只接受同源消息
         }
         
