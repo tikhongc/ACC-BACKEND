@@ -9,6 +9,10 @@
         "destination": "https://acc-sync.vercel.app/auth/$1"
       },
       {
+        "source": "/acc-backup/(.*)",
+        "destination": "https://acc-sync.vercel.app/acc-backup/$1"
+      },
+      {
         "source": "/(.*)",
         "destination": "/index.html"
       }
