@@ -17,31 +17,9 @@ import eventBus from './utils/eventBus'
 // 导入通用样式
 import './styles/common.css'
 // 引入i18n
-import i18n from './i18n'
+
 import Login from './views/Login.vue'
-import Home from './views/Home.vue'
 import AuthSuccess from './views/AuthSuccess.vue'
-import AccountInfo from './views/AccountInfo.vue'
-import FormsData from './views/FormsData.vue'
-import FormsTemplates from './views/FormsTemplates.vue'
-import DataConnectorSync from './views/DataConnectorSync.vue'
-// import ProjectInfo from './views/ProjectInfo.vue' // 已整合到AccountInfo页面
-import ApprovalWorkflows from './views/ApprovalWorkflows.vue'
-import Reviews from './views/Reviews.vue'
-import RfisData from './views/RfisData.vue'
-import IssuesData from './views/IssuesData.vue'
-import AutospecsPackagesData from './views/AutospecsPackagesData.vue'
-import SystemStatus from './views/SystemStatus.vue'
-import DownloadConfig from './views/DownloadConfig.vue'
-import DownloadTasks from './views/DownloadTasks.vue'
-import PermissionsSync from './views/PermissionsSync.vue'
-import FileBrowser from './views/FileBrowser.vue'
-import ProjectUsers from './views/ProjectUsers.vue'
-import SubmittalView from './views/SubmittalView.vue'
-import SubmittalDetailView from './views/SubmittalDetailView.vue'
-import IssueDetailView from './views/IssueDetailView.vue'
-import SyncProgress from './views/SyncProgress.vue'
-import SyncHistory from './views/SyncHistory.vue'
 
 // 配置axios支持cookies與基址
 axios.defaults.baseURL = apiBase
@@ -200,29 +178,6 @@ const routes = [
   { path: '/login', component: Login, meta: { requiresAuth: false } },
   { path: '/api', redirect: '/' },
   { path: '/auth/success', component: AuthSuccess, meta: { requiresAuth: false } },
-  { path: '/account-info', component: AccountInfo, meta: { requiresAuth: true } },
-  { path: '/project-info', redirect: '/account-info' }, // 重定向到整合的账户信息页面
-  { path: '/forms/jarvis', component: FormsData, meta: { requiresAuth: true } },
-  { path: '/forms/templates', component: FormsTemplates, meta: { requiresAuth: true } },
-  { path: '/data-connector/sync', component: DataConnectorSync, meta: { requiresAuth: true } },
-  { path: '/reviews/workflows', component: ApprovalWorkflows, meta: { requiresAuth: true } },
-  { path: '/reviews/data', component: Reviews, meta: { requiresAuth: true } },
-  { path: '/rfis/data', component: RfisData, meta: { requiresAuth: true } },
-  { path: '/rfis/statistics', redirect: '/rfis/data' }, // 重定向到整合的RFI数据页面
-  { path: '/issues/data', component: IssuesData, meta: { requiresAuth: true } },
-  { path: '/autospecs-packages/data', component: AutospecsPackagesData, meta: { requiresAuth: true } },
-  { path: '/system/status', component: SystemStatus, meta: { requiresAuth: true } },
-  { path: '/download-config', component: DownloadConfig, meta: { requiresAuth: true } },
-  { path: '/download-tasks', component: DownloadTasks, meta: { requiresAuth: true } },
-  { path: '/permissions-sync', component: PermissionsSync, meta: { requiresAuth: true } },
-  { path: '/file-browser', component: FileBrowser, meta: { requiresAuth: true } },
-  { path: '/project-users', component: ProjectUsers, meta: { requiresAuth: true } },
-  { path: '/submittals/data', component: SubmittalView, meta: { requiresAuth: true } },
-  { path: '/submittals/detail', component: SubmittalDetailView, meta: { requiresAuth: true } },
-  { path: '/rfis/detail', component: () => import('./views/RfiDetailView.vue'), meta: { requiresAuth: true } },
-  { path: '/issues/detail', component: IssueDetailView, meta: { requiresAuth: true } },
-  { path: '/sync-progress/:projectId/:projectName/:syncType', component: SyncProgress, meta: { requiresAuth: true } },
-  { path: '/sync-history/:projectId', component: SyncHistory, meta: { requiresAuth: true } }
 ]
 
 const router = createRouter({
